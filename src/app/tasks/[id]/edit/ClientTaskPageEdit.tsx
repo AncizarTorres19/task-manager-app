@@ -1,7 +1,8 @@
 'use client';
 
-import { TaskForm } from "@/app/tasks/create/TaskForm";
+//Components
 import { Task } from "@/components/interfaces";
+import { TaskForm } from "@/app/tasks/create/TaskForm";
 
 const ClientTaskPageEdit = ({ task }: { task: Task | null }) => {
     return (

@@ -10,8 +10,9 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-
+// Components
 import { TaskButtonDelete } from "./TaskButtonDelete";
+// Interfaces
 import { Task } from "./interfaces";
 
 const names: { [key: string]: string } = {
@@ -40,7 +41,7 @@ export const TaskCard = ({ task, getUserTasks }: { task: Task, getUserTasks: () 
             <CardContent>
                 <p>{task?.description}</p>
                 <span className="text-slate-600">
-                    {new Date(task?.createdAt ?? "").toLocaleDateString()}
+                    Creada el: {new Date(task?.createdAt ?? "").toLocaleDateString()}
                 </span>
             </CardContent>
             <CardFooter className="flex gap-x-2 justify-end">

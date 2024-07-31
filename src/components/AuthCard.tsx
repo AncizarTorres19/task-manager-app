@@ -1,3 +1,4 @@
+//ui
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -9,8 +10,8 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+//Interfaces
 import { AuthCardProps } from "./interfaces";
-
 
 export function AuthCard({ title, description, textButton, onSubmit, register, moodRegister }: Readonly<AuthCardProps>) {
   return (

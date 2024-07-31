@@ -1,8 +1,9 @@
 'use client';
 
 import { useEffect, useState } from "react";
-import { TaskForm } from "./TaskForm"
+//Components
 import { Spinner } from "@/components/Spinner";
+import { TaskForm } from "./TaskForm"
 
 const NewTaks = () => {
 
