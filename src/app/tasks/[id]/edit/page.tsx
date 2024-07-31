@@ -40,7 +40,7 @@ const TaskPageEdit = ({ params }: { params: { id: string } }) => {
         return <Spinner />;
     }
     return (
-        <div className="flex justify-center items-center h-screen">
+        <div className="flex justify-center items-start h-screen">
             <ClientTaskPageEdit task={task} />
         </div>
     );

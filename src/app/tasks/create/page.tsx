@@ -13,7 +13,6 @@ const NewTaks = () => {
         setHydrated(true);
     }, []);
 
-
     if (!hydrated) {
         return <Spinner />;
     }

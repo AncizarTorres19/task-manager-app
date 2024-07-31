@@ -38,8 +38,8 @@ export const TaskCard = ({ task, getUserTasks }: { task: Task, getUserTasks: () 
                     {names[task?.priority]}
                 </Badge>
             </CardHeader>
-            <CardContent>
-                <p>{task?.description}</p>
+            <CardContent className="flex flex-col gap-y-2">
+                <p className="truncate">{task?.description}</p>
                 <span className="text-slate-600">
                     Creada el: {new Date(task?.createdAt ?? "").toLocaleDateString()}
                 </span>

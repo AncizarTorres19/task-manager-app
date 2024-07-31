@@ -160,7 +160,7 @@ export function TaskForm({ task }: { readonly task?: Task | null }) {
           </div>
         </CardContent>
         <CardFooter className="flex justify-between">
-          <Link href="/" className={buttonVariants({ variant: "secondary" })}>
+          <Link href="/tasks" className={buttonVariants({ variant: "secondary" })}>
             Cancelar
           </Link>
           <Button type="submit">

@@ -1,11 +1,13 @@
 'use client';
 
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 //Components
 import { AuthCard } from "@/components/AuthCard";
 import { AuthFormData } from "@/components/interfaces";
 import { ModeToggle } from "@/components/ThemeToggleButton";
+import { Spinner } from "@/components/Spinner";
 //Axios
 import axiosClient from "./config/AxiosClient";
 //ui
@@ -16,16 +18,23 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs";
+//Hooks
+import useUserSession from "@/hooks/useUserSession";
 
 const Page = () => {
 
   const { toast } = useToast();
 
+  const { userInSession } = useUserSession();
+
   const router = useRouter();
 
   const { register, handleSubmit, reset } = useForm<AuthFormData>();
 
+  const [hydrated, setHydrated] = useState<boolean>(false);
+
   const handleLogin = async (data: AuthFormData) => {
+    setHydrated(false);
     try {
       const response = await axiosClient.post<{ msg: string, ok: boolean, token: string, user: string }>('/login', data);
       const { token, user } = response.data;
@@ -44,10 +53,13 @@ const Page = () => {
         variant: "destructive",
       });
       console.error(error);
+    } finally {
+      setHydrated(true);
     }
   }
 
   const handleRegister = (data: AuthFormData) => {
+    setHydrated(false);
     try {
       axiosClient.post('login/new', data);
       toast({
@@ -62,8 +74,25 @@ const Page = () => {
         variant: "destructive",
       });
       console.error(error);
+    } finally {
+      setHydrated(true);
     }
   }
+
+  useEffect(() => {
+    if (userInSession) {
+      router.push('/tasks');
+    }
+  }, [userInSession]);
+
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
+
+  if (!hydrated) {
+    return <Spinner />;
+  }
+
   return (
     <>
       <nav className="flex justify-between py-5">
