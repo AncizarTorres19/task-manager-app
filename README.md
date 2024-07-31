@@ -30,9 +30,6 @@ Esta es una aplicación de gestión de tareas desarrollada como parte de una pru
    - Modelo de datos para las tareas y los usuarios.
    - Almacenamiento de las tareas en una base de datos relacional.
 
-4. **Bonus**:
-   - Mostrar la lista de tareas creadas en un componente de calendario.
-
 ## Requisitos Previos
 
 - Node.js (v18 o superior)
@@ -53,24 +50,17 @@ Esta es una aplicación de gestión de tareas desarrollada como parte de una pru
     # o
     yarn install
 
-3. **Configurar Prisma Inicializar Prisma y la base de datos**
+3. **Crear el Archivo `.env`**
 
-   ```sh
-    npx prisma migrate dev --name init
+Debes crear un archivo `.env` en la raíz del proyecto. Un archivo de ejemplo `.env.example` está disponible en el repositorio. El contenido del archivo `.env` debe ser similar a:
 
+    NEXT_PUBLIC_API_BASE_URL="http://localhost:3001/api/"
 
-4. **Crear el Archivo `.env`**
-
+5. **Ejecutar el Proyecto**
    ```sh
     npm run dev
     # o
     yarn dev
 
-5. **Ejecutar el Proyecto**
-
-Debes crear un archivo `.env` en la raíz del proyecto. Un archivo de ejemplo `.env.example` está disponible en el repositorio. El contenido del archivo `.env` debe ser similar a:
-
-   ```sh
-    NEXT_PUBLIC_API_BASE_URL="http://localhost:3001/api/"
-
-6. **Abrir en el Navegador Ve a http://localhost:3000 para ver la aplicación en funcionamiento.**
+6. **Abrir en el Navegador**
+ Ve a http://localhost:3000 para ver la aplicación en funcionamiento.
