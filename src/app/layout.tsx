@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { Navbar } from "@/components/Navbar";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Toaster } from "@/components/ui/toaster";
+import { ModeToggle } from "@/components/ThemeToggleButton";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -36,7 +37,6 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <main className="container mx-auto">
-            <Navbar />
             {children}
           </main>
           <Toaster />

@@ -1,13 +1,15 @@
 'use client';
-
-import useUserSession from "@/hooks/useUserSession";
 import { useEffect, useState } from "react";
-import axiosClient from "../config/AxiosClient";
-import { TaskCard } from "@/components/TaskCard";
-import { Task } from "@/components/interfaces";
+//Components
 import { Spinner } from "@/components/Spinner";
+import { Task } from "@/components/interfaces";
+import { TaskCard } from "@/components/TaskCard";
+//Hooks
+import useUserSession from "@/hooks/useUserSession";
+//Axios
+import axiosClient from "../config/AxiosClient";
 
-const Home = () => {
+const Tasks = () => {
 
     const { userInSession } = useUserSession();
 
@@ -38,7 +40,7 @@ const Home = () => {
     }
 
     return (
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
             {tasks.map((task) => (
                 <TaskCard task={task} key={task.id} getUserTasks={getUserTasks} />
             ))}
@@ -47,4 +49,4 @@ const Home = () => {
     )
 }
 
-export default Home
+export default Tasks

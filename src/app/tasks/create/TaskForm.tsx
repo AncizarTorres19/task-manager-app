@@ -24,12 +24,15 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Task } from "@/components/interfaces";
 import { useToast } from "@/components/ui/use-toast";
-import axiosClient from "../config/AxiosClient";
+import axiosClient from "../../config/AxiosClient";
 import useUserSession from "@/hooks/useUserSession";
+import { useRouter } from "next/navigation";
 
-export function TaskForm({ task }: { readonly task?: Task | null}) {
+export function TaskForm({ task }: { readonly task?: Task | null }) {
 
   const { userInSession } = useUserSession();
+
+  const router = useRouter();
 
   const { toast } = useToast();
 
@@ -64,7 +67,7 @@ export function TaskForm({ task }: { readonly task?: Task | null}) {
         description: "La tarea ha sido creada exitosamente",
       });
       reset();
-      window.location.href = '/home';
+      router.push('/tasks');
     } catch (error) {
       toast({
         title: "Uh oh! Error al crear la tarea",
@@ -83,7 +86,7 @@ export function TaskForm({ task }: { readonly task?: Task | null}) {
         description: "La tarea ha sido actualizada exitosamente",
       });
       reset();
-      window.location.href = '/home';
+      router.push('/tasks');
     } catch (error) {
       toast({
         title: "Uh oh! Error al actualizar la tarea",
@@ -95,12 +98,12 @@ export function TaskForm({ task }: { readonly task?: Task | null}) {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Card className="w-[450px]">
+    <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-lg mx-auto p-4">
+      <Card className="w-full">
         <CardHeader>
-          <CardTitle>Crear tarea</CardTitle>
+          <CardTitle>{task?.id ? "Actualizar tarea" : "Crear tarea"}</CardTitle>
           <CardDescription>
-            Complete el formulario a continuación para crear una nueva tarea.
+            {task?.id ? "Actualice la información de la tarea a continuación." : "Complete el formulario a continuación para crear una nueva tarea."}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -113,7 +116,7 @@ export function TaskForm({ task }: { readonly task?: Task | null}) {
                 id="name"
                 placeholder="Nombre de la tarea"
               />
-              {errors.name && <span>Name is required</span>}
+              {errors.name && <span className="text-red-500 text-sm">El nombre es requerido</span>}
             </div>
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="description">Descripción</Label>
@@ -123,7 +126,7 @@ export function TaskForm({ task }: { readonly task?: Task | null}) {
                 id="description"
                 placeholder="Descripción de la tarea"
               />
-              {errors.description && <span>Description is required</span>}
+              {errors.description && <span className="text-red-500 text-sm">La descripción es requerida</span>}
             </div>
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="priority">Prioridad</Label>
@@ -148,13 +151,13 @@ export function TaskForm({ task }: { readonly task?: Task | null}) {
                   </Select>
                 )}
               />
-              {errors.priority && <span>Priority is required</span>}
+              {errors.priority && <span className="text-red-500 text-sm">La prioridad es requerida</span>}
             </div>
           </div>
         </CardContent>
         <CardFooter className="flex justify-between">
           <Link href="/" className={buttonVariants({ variant: "secondary" })}>
-            Cancel
+            Cancelar
           </Link>
           <Button type="submit">
             {task?.id ? "Actualizar" : "Crear"}

@@ -6,8 +6,12 @@ import { Spinner } from "@/components/Spinner";
 import ClientTaskPageEdit from "./ClientTaskPageEdit";
 //Axios
 import axiosClient from "@/app/config/AxiosClient";
+import { useRouter } from "next/navigation";
 
 const TaskPageEdit = ({ params }: { params: { id: string } }) => {
+
+    const router = useRouter();
+
     const [task, setTask] = useState(null);
     const [hydrated, setHydrated] = useState<boolean>(false);
 
@@ -17,13 +21,13 @@ const TaskPageEdit = ({ params }: { params: { id: string } }) => {
                 const response = await axiosClient.get(`tasks/by-id/${params.id}`);
                 const task = response.data.task;
                 if (!task) {
-                    window.location.href = '/home';
+                    router.push('/tasks');
                 } else {
                     setTask(task);
                 }
             } catch (error) {
                 console.error('Error fetching task:', error);
-                window.location.href = '/home';
+                router.push('/tasks');
             } finally {
                 setHydrated(true);
             }

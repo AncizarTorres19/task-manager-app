@@ -18,7 +18,7 @@ const NewTaks = () => {
     }
 
     return (
-        <div className="flex justify-center items-center h-screen">
+        <div className="flex justify-center items-start min-h-screen p-4">
             <TaskForm />
         </div>
     )

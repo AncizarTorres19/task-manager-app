@@ -1,36 +1,76 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Aplicación de Gestión de Tareas
 
-## Getting Started
+## Descripción del Proyecto
 
-First, run the development server:
+Esta es una aplicación de gestión de tareas desarrollada como parte de una prueba técnica para un puesto de Desarrollador Junior. La aplicación permite a los usuarios gestionar sus tareas diarias con funcionalidades para crear, ver, editar y eliminar tareas.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Tecnologías Utilizadas
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Frontend**: Next.js
+- **Estilización**: Tailwind UI
+- **Backend API**: Node.js y Express
+- **ORM**: Prisma
+- **Base de Datos**: SQLite
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Funcionalidades
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+1. **Gestión de Tareas**:
+   - Crear una nueva tarea.
+   - Ver la lista de tareas.
+   - Editar una tarea existente.
+   - Eliminar una tarea.
 
-## Learn More
+2. **Interfaz de Usuario**:
+   - Diseño responsivo utilizando Tailwind UI.
+   - Interfaz clara y fácil de usar.
+   - Creación de usuarios.
 
-To learn more about Next.js, take a look at the following resources:
+3. **Base de Datos**:
+   - Prisma para interactuar con la base de datos.
+   - Modelo de datos para las tareas y los usuarios.
+   - Almacenamiento de las tareas en una base de datos relacional.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+4. **Bonus**:
+   - Mostrar la lista de tareas creadas en un componente de calendario.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Requisitos Previos
 
-## Deploy on Vercel
+- Node.js (v18 o superior)
+- npm (v6 o superior) o yarn
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Instrucciones para Ejecutar el Proyecto
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+1. **Clonar el Repositorio**
+
+   ```sh
+   git clone https://github.com/AncizarTorres19/task-manager-app.git
+   cd task-manager
+
+2. **Instalar Dependencias**
+
+   ```sh
+    npm install
+    # o
+    yarn install
+
+3. **Configurar Prisma Inicializar Prisma y la base de datos**
+
+   ```sh
+    npx prisma migrate dev --name init
+
+
+4. **Crear el Archivo `.env`**
+
+   ```sh
+    npm run dev
+    # o
+    yarn dev
+
+5. **Ejecutar el Proyecto**
+
+Debes crear un archivo `.env` en la raíz del proyecto. Un archivo de ejemplo `.env.example` está disponible en el repositorio. El contenido del archivo `.env` debe ser similar a:
+
+   ```sh
+    NEXT_PUBLIC_API_BASE_URL="http://localhost:3001/api/"
+
+6. **Abrir en el Navegador Ve a http://localhost:3000 para ver la aplicación en funcionamiento.**

@@ -23,7 +23,7 @@ const names: { [key: string]: string } = {
 
 export const TaskCard = ({ task, getUserTasks }: { task: Task, getUserTasks: () => void }) => {
     return (
-        <Card>
+        <Card className="w-full">
             <CardHeader className="flex flex-row justify-between">
                 <CardTitle>{task?.name}</CardTitle>
                 <Badge
