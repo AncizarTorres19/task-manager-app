@@ -1,46 +1,34 @@
 'use client';
 
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Auth } from "@/components/Auth";
-import { TaskCard } from "@/components/TaskCard";
-import axiosClient from './config/AxiosClient';
+import { Spinner } from "@/components/Spinner";
+import useUserSession from '@/hooks/useUserSession';
+import { useEffect, useState } from "react";
 
 const Page = () => {
-  const [userInSession, setUserInSession] = useState<{ id: number } | null>(null);
-  const [tasks, setTasks] = useState<any[]>([]);
-
-  const getUserTasks = async () => {
-    if (!userInSession) return;
-    try {
-      const { data } = await axiosClient.get(`tasks/${userInSession.id}`)
-      console.log(data);
-      setTasks(data.tasks);
-    } catch (error) {
-      console.error(error);
-    }
-  }
+  const { userInSession } = useUserSession();
+  const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
-    getUserTasks();
+    setHydrated(true);
+    if (userInSession) {
+      window.location.href = '/home';
+    }
   }, [userInSession]);
+
+  if (!hydrated) {
+    return <Spinner />;
+  }
 
   return (
     <>
       {!userInSession && (
-        <div className="flex justify-center items-center h-screen">
-          <Auth setUserInSession={(user: Dispatch<SetStateAction<{ id: number; } | null>>) => setUserInSession(user)} />
-        </div>
-      )}
-      {userInSession && (
-        <div className="grid grid-cols-3 gap-4">
-          {tasks.map((task) => (
-            <TaskCard task={task} key={task.id} />
-          ))}
-          {(tasks.length === 0 && userInSession) && <span>No hay tareas</span>}
+        <div className="flex justify-center items-center h-auto">
+          <Auth />
         </div>
       )}
     </>
   );
-}
+};
 
 export default Page;

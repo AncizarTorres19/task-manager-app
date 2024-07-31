@@ -15,7 +15,7 @@ import axiosClient from "@/app/config/AxiosClient";
 
 import { AuthFormData } from "./interfaces";
 
-export function Auth({ setUserInSession }: { readonly setUserInSession: (user: string) => void }) {
+export function Auth() {
 
   const { toast } = useToast();
 
@@ -25,17 +25,19 @@ export function Auth({ setUserInSession }: { readonly setUserInSession: (user: s
     try {
       const response = await axiosClient.post<{ msg: string, ok: boolean, token: string, user: string }>('/login', data);
       const { token, user } = response.data;
-      console.log(response.data);
       toast({
         title: "¡Inicio de sesión exitoso!",
         description: "Bienvenido de vuelta",
       });
       sessionStorage.setItem('token', token);
-      setUserInSession(user);
+      sessionStorage.setItem('user', JSON.stringify(user));
+      reset();
+      window.location.href = '/home';
     } catch (error) {
       toast({
         title: "Uh oh! Error en la autenticación",
         description: (error as any).response.data.msg || "Ocurrió un error al intentar iniciar sesión",
+        variant: "destructive",
       });
       console.error(error);
     }
@@ -53,13 +55,14 @@ export function Auth({ setUserInSession }: { readonly setUserInSession: (user: s
       toast({
         title: "Uh oh! Error en el registro",
         description: (error as any).response.data.msg || "Ocurrió un error al intentar registrarse",
+        variant: "destructive",
       });
       console.error(error);
     }
   }
 
   return (
-    <Tabs defaultValue="login" className="w-[400px]">
+    <Tabs defaultValue="login" className="w-[450px]">
       <TabsList className="grid w-full grid-cols-2">
         <TabsTrigger value="login">Iniciar sesión</TabsTrigger>
         <TabsTrigger value="register">Registrarse</TabsTrigger>

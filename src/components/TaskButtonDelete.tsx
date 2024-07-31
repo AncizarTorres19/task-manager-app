@@ -1,11 +1,31 @@
+import axiosClient from "@/app/config/AxiosClient";
+//ui
 import { Button } from "./ui/button";
-// import { removeTask } from "@/actions/tasks-actions";
+import { toast } from "./ui/use-toast";
 
-export const TaskButtonDelete = () => {
+export const TaskButtonDelete = ({ taskId, getUserTasks }: { taskId: number, getUserTasks: () => void }) => {
+
+    const handleDelete = async () => {
+        try {
+            await axiosClient.delete(`tasks/${taskId}`);
+            toast({
+                title: "Tarea eliminada",
+                description: "La tarea ha sido eliminada exitosamente",
+                duration: 5000,
+            });
+            getUserTasks();
+        } catch (error) {
+            toast({
+                title: "Error al eliminar la tarea",
+                description: "Ocurrió un error al intentar eliminar la tarea",
+                variant: "destructive",
+                duration: 5000,
+            });
+        }
+    }
     return (
-        <form /* action={removeTask} */>
-            <input type="hidden" name="taskId" /* value={taskId} */ />
-            <Button variant="destructive">Delete</Button>
-        </form>
+        <Button variant="destructive" onClick={() => handleDelete()}>
+            Eliminar
+        </Button>
     )
 }

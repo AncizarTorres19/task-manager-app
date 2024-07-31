@@ -8,7 +8,7 @@ const config = {
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
-	],
+  ],
   prefix: "",
   theme: {
     container: {
@@ -71,10 +71,16 @@ const config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        "rotate-plane": {
+          '0%': { transform: 'perspective(120px) rotateX(0deg) rotateY(0deg)' },
+          '50%': { transform: 'perspective(120px) rotateX(-180.1deg) rotateY(0deg)' },
+          '100%': { transform: 'perspective(120px) rotateX(-180deg) rotateY(-179.9deg)' },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "rotate-plane": "rotate-plane 1.2s infinite ease-in-out",
       },
     },
   },

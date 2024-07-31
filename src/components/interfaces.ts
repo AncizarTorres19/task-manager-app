@@ -19,6 +19,7 @@ export interface Task {
     id:          number;
     name:        string;
     description: string;
+    enabled?:    boolean;
     priority:    string;
-    createdAt:   Date;
+    createdAt?:  Date;
 }

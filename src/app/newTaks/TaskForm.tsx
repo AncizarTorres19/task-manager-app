@@ -1,3 +1,5 @@
+'use client';
+
 import Link from "next/link";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
@@ -20,100 +22,133 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { Task } from "@/components/interfaces";
+import { useToast } from "@/components/ui/use-toast";
+import axiosClient from "../config/AxiosClient";
+import useUserSession from "@/hooks/useUserSession";
 
-export function TaskForm() {
-  enum PriorityEnum {
-    Low = "low",
-    Medium = "medium",
-    High = "high",
-    Urgent = "urgent",
+export function TaskForm({ task }: { readonly task?: Task | null}) {
+
+  const { userInSession } = useUserSession();
+
+  const { toast } = useToast();
+
+  const { control, register, handleSubmit, reset, formState: { errors } } = useForm<Task>({
+    defaultValues: {
+      id: task?.id,
+      name: task?.name ?? '',
+      description: task?.description ?? '',
+      priority: task?.priority ?? '',
+    }
+  });
+
+  const onSubmit: SubmitHandler<Task> = (data) => {
+    if (task?.id) {
+      handleUpdate(data);
+    } else {
+      handleCreate(data);
+    }
   }
 
-  interface IFormInput {
-    description: string;
-    enabled: boolean;
-    id?: number;
-    name: string;
-    priority: PriorityEnum;
+  const handleCreate = async (data: Task) => {
+    const newTask = {
+      name: data.name,
+      description: data.description,
+      priority: data.priority,
+      userId: userInSession?.id
+    }
+    try {
+      await axiosClient.post('tasks', newTask);
+      toast({
+        title: "¡Tarea creada!",
+        description: "La tarea ha sido creada exitosamente",
+      });
+      reset();
+      window.location.href = '/home';
+    } catch (error) {
+      toast({
+        title: "Uh oh! Error al crear la tarea",
+        description: (error as any).response?.data?.msg || "Ocurrió un error al intentar crear la tarea",
+        variant: "destructive",
+      });
+      console.error(error);
+    }
   }
 
-  // const {
-  //   register,
-  //   handleSubmit,
-  //   watch,
-  //   control,
-  //   formState: { errors },
-  // } = useForm<IFormInput>()
-
-  // const onSubmit: SubmitHandler<IFormInput> = (data) => console.log(data);
-
-  // const watchedId = watch("id");
+  const handleUpdate = async (data: Task) => {
+    try {
+      await axiosClient.put(`tasks/${data.id}`, data);
+      toast({
+        title: "¡Tarea actualizada!",
+        description: "La tarea ha sido actualizada exitosamente",
+      });
+      reset();
+      window.location.href = '/home';
+    } catch (error) {
+      toast({
+        title: "Uh oh! Error al actualizar la tarea",
+        description: (error as any).response.data.msg || "Ocurrió un error al intentar actualizar la tarea",
+        variant: "destructive",
+      });
+      console.error(error);
+    }
+  }
 
   return (
-    <form /* onSubmit={handleSubmit(onSubmit)} */>
-      <input type="hidden" /* {...register("id")} */ />
-      <Card className="w-[350px]">
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Card className="w-[450px]">
         <CardHeader>
           <CardTitle>Crear tarea</CardTitle>
           <CardDescription>
-          cd
+            Complete el formulario a continuación para crear una nueva tarea.
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid w-full items-center gap-4">
             <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="name">Name</Label>
+              <Label htmlFor="name">Nombre</Label>
               <Input
-                // {...register("name", { required: true })}
+                {...register("name", { required: true })}
                 name="name"
                 id="name"
                 placeholder="Nombre de la tarea"
               />
-              {/* {errors.name && <span>Name is required</span>} */}
+              {errors.name && <span>Name is required</span>}
             </div>
             <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="description">Description</Label>
+              <Label htmlFor="description">Descripción</Label>
               <Textarea
-                // {...register("description", { required: true })}
+                {...register("description", { required: true })}
                 name="description"
                 id="description"
                 placeholder="Descripción de la tarea"
               />
-              {/* {errors.description && <span>Description is required</span>} */}
+              {errors.description && <span>Description is required</span>}
             </div>
             <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="priority">Priority</Label>
-              <Select>
-                    <SelectTrigger id="priority">
-                      <SelectValue placeholder="Select" />
-                    </SelectTrigger>
-                    <SelectContent position="popper">
-                      <SelectItem value={PriorityEnum.Low}>Baja</SelectItem>
-                      <SelectItem value={PriorityEnum.Medium}>Media</SelectItem>
-                      <SelectItem value={PriorityEnum.High}>Alta</SelectItem>
-                      <SelectItem value={PriorityEnum.Urgent}>Urgente</SelectItem>
-                    </SelectContent>
-                  </Select>
-              {/* <Controller
+              <Label htmlFor="priority">Prioridad</Label>
+              <Controller
                 name="priority"
                 control={control}
-                defaultValue={PriorityEnum.Low} // Asegura un valor por defecto
                 rules={{ required: true }}
                 render={({ field }) => (
-                  <Select {...field}>
+                  <Select
+                    value={field.value}
+                    onValueChange={field.onChange}
+                  >
                     <SelectTrigger id="priority">
-                      <SelectValue placeholder="Select" />
+                      <SelectValue placeholder="Selecciona" />
                     </SelectTrigger>
                     <SelectContent position="popper">
-                      <SelectItem value={PriorityEnum.Low}>Baja</SelectItem>
-                      <SelectItem value={PriorityEnum.Medium}>Media</SelectItem>
-                      <SelectItem value={PriorityEnum.High}>Alta</SelectItem>
-                      <SelectItem value={PriorityEnum.Urgent}>Urgente</SelectItem>
+                      <SelectItem value="low">Baja</SelectItem>
+                      <SelectItem value="medium">Media</SelectItem>
+                      <SelectItem value="high">Alta</SelectItem>
+                      <SelectItem value="urgent">Urgente</SelectItem>
                     </SelectContent>
                   </Select>
                 )}
-              /> */}
-              {/* {errors.priority && <span>Priority is required</span>} */}
+              />
+              {errors.priority && <span>Priority is required</span>}
             </div>
           </div>
         </CardContent>
@@ -122,8 +157,7 @@ export function TaskForm() {
             Cancel
           </Link>
           <Button type="submit">
-            {/* {watchedId ? "Actualizar" : "Crear"} */}
-            Crear
+            {task?.id ? "Actualizar" : "Crear"}
           </Button>
         </CardFooter>
       </Card>
